@@ -1,0 +1,1 @@
+poker_var = Npm.require('poker-evaluator');

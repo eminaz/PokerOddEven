@@ -1,0 +1,46 @@
+<style>
+
+body{
+
+}
+
+a img:hover {
+   opacity:1.0;
+   box-shadow:none;
+}
+
+a {
+     color:pink; 
+     text-decoration:none; 
+     cursor:pointer;  
+}
+
+.titlec {
+  font-size: small;
+}
+ul.videos li {
+  float: left;
+  width: 10em;
+  margin-bottom: 1em;
+}
+ul.videos
+{
+  margin-bottom: 1em;
+  padding-left : 0em;
+  margin-left: 0em;
+  list-style: none;
+}
+.playerContainer
+     {
+     display:block; 
+     position:relative;
+     overflow:hidden;
+}
+.playerContainer img 
+    {
+     position:absolute;
+     top:0;
+     left:0; 
+     width:100%;
+}
+</style>

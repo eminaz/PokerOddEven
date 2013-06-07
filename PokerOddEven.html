@@ -1,0 +1,61 @@
+
+<head>
+  <title>simple-game</title>
+
+
+<link rel="stylesheet" href="css/normalize.css" />
+<link rel="stylesheet" href="css/foundation.css" />  
+<link rel="stylesheet" href="css/test.css" />  
+
+<script src="poker.min.js"></script>
+
+<script src="PokerEvaluator.js"></script>
+
+
+</head>
+
+<body>
+<!--
+  {{renderPage}}
+-->
+
+{{> deck}}
+
+</body>
+
+<template name="deck">
+<div style="text-align:center">
+  <button id="deal" style="display:inline">Deal a card</button>
+  <button id="reset" class="success">Start Over</button>
+  <br>  <br>  <br> 
+  <canvas id="deck_canvas" width="580" height="120"></canvas>
+
+  <h1>Your card</h1>
+  <div style="display:none">
+    {{card1_player}}
+    {{card2_player}}
+  </div>
+
+  <canvas id="my_card_canvas" width="580" height="120"></canvas>
+<br><br>
+  <button id="showdown">Showdown</button>
+  <div id="result_div"></div>
+
+</div>
+
+
+</template>
+
+
+
+<template name="temp">
+
+  <h1>the deck</h1>
+  {{cards}}
+
+
+  <h1>Table</h1>
+  {{cards_dealt}}
+<br>
+  
+</template>
