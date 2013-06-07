@@ -186,6 +186,9 @@ Template.deck.events({
 'click #showdown': function (e, t) {
   //calculate the score of the player
   //
+
+  player1 = [];
+
   if(Session.get('card1_player').length==2){
     number1_player = parseInt(Session.get('card1_player')[1]);
   }
@@ -202,6 +205,13 @@ Template.deck.events({
     number2_player = parseInt(str);
   }
 
+  card1={number:number1_player,suit:Session.get('card1_player')[0]};
+  card2={number:number2_player,suit:Session.get('card2_player')[0]};
+
+  player1.push(card1);
+  player1.push(card2);
+
+
   //console.log("score_player " + score_player);
   //calculate the score of the dealt cards
   score_dealt = 0;
@@ -210,29 +220,33 @@ Template.deck.events({
   arr_temp=cards_dealt.slice(0);
 
   for(i=0;i<Object.keys(arr_temp).length;i++){
-    //console.log("Session.get('cards_dealt') "+ Session.get('cards_dealt'));
     if(arr_temp[i].length==2){
       str=arr_temp[i][1]+"";
     }
     else{
       str=arr_temp[i][1]+arr_temp[i][2]+"";
     }
-    //console.log("parseInt(Session.get('cards_dealt')[1]) "+parseInt(str,10))
     score_dealt += parseInt(str);
-  }
-  //console.log("score_dealt " + score_dealt);
 
+    card={number:str,suit:arr_temp[i][0]};
+    player1.push(card);
+
+  }
+
+/*
   result=number1_player+number2_player+score_dealt;
+  
   if(isEven(result)){
     result_message='you win!';
   }
   else{
     result_message='you lose!';
   }
+*/
 
   //console.log("result_message " + result_message);
 
-  document.getElementById("result_div").innerHTML='<h1>'+result_message+'</h1>';
+ // document.getElementById("result_div").innerHTML='<h1>'+result_message+'</h1>';
   
   //Session.set('result_message',result_message);
 
@@ -246,6 +260,31 @@ Template.deck.events({
 
 
 
+  player2=player1.slice(0);
+  player2.splice(6,1)
+  player2.push({number:7,suit:'C'});
+
+  console.log("player1[0].number "+player1[6].number);
+  console.log("player2[0].number "+player2[6].number);
+
+  console.log("player1.length "+player1.length);
+  console.log("player2.length "+player2.length);
+
+
+  Meteor.call('evaluate_poker',player1,player2,function(){
+    //console.log('won '+won);
+    //console.log('won_collection '+won_collection.findOne().won);
+  });
+
+
+  if(won_collection.findOne().won){
+    result_message='you win!';
+  }
+  else{
+    result_message='you lose!';
+  }
+
+  document.getElementById("result_div").innerHTML='<h1>'+result_message+'</h1>';
 
 }
 
@@ -340,7 +379,42 @@ function show_card(card_dealt,num_of_cards,your_card_bool,show_back,space){
 
 
 
+function evaluate(player1,player2){
 
+ var Hand, gary, mike, steve, winners;
+
+  Hand = Npm.require('hoyle').Hand;
+
+  gary = Hand.make(["2s", "3s", "4h", "5c", "7s", "8c", "9d"]);
+
+  mike = Hand.make(["5s", "Ts", "3h", "Ac", "2s", "Ts", "8d"]);
+
+  steve = Hand.make(["5s", "5h", "3s", "3c", "2s", "Ts", "3d"]);
+
+  player1_hand = Hand.make(player1);
+  //player2_hand = Hand.make(player2);
+
+  winners = Hand.pickWinners([player1_hand,gary]);
+
+  //console.log(winners[0]);
+
+  //console.log(player1_hand);
+
+
+  //console.log(player2_hand);
+
+  if(player1_hand==winners[0]){
+    //console.log('player1_hand wins');
+    won=true;
+    return true;
+  }
+  else{
+    //console.log('player2_hand wins');
+    won=false;
+    return false;
+  }
+
+}
 
 
 
